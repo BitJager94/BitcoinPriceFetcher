@@ -1,58 +1,44 @@
-# Code Documentation - Face Detection and Image Capture
+# Code Documentation - Bitcoin Price Chart
 
-This Python script utilizes OpenCV to perform face detection using Haar cascades and captures images when a face is detected for a specified duration. The captured image is then sent as an email attachment using SMTP.
+This Python script allows users to fetch and plot historical Bitcoin prices using the CoinDesk API. The script utilizes the `requests`, `matplotlib`, `datetime`, `calendar`, `tkinter`, `tkcalendar`, and `colorama` libraries.
 
 ## Requirements
 
 To run this code, the following packages need to be installed:
 
-- `cv2` (OpenCV)
-- `time`
-- `os`
-- `smtplib`
-- `email`
+- `requests`
+- `matplotlib`
+- `datetime`
+- `calendar`
+- `tkinter`
+- `tkcalendar`
+- `colorama`
 
 Make sure these packages are installed in your Python environment.
 
-## Configuration
-
-Before running the script, you need to configure the following variables:
-
-- `SAVE_DIR`: The directory where captured images will be saved. If the directory doesn't exist, it will be created.
-- `SMTP_SERVER`: The SMTP server address.
-- `SMTP_PORT`: The SMTP server port.
-- `SENDER_EMAIL`: The email address of the sender.
-- `SENDER_PASSWORD`: The password for the sender's email address.
-- `RECIPIENT_EMAIL`: The email address of the recipient.
-
-Make sure to update these variables with the appropriate values before running the code.
-
 ## Functionality
 
-### `detect_faces(frame)`
+### `fetch_bitcoin_prices(start_date, end_date)`
 
-This function takes a frame (image) as input and returns `True` if at least one face is detected, and `False` otherwise. It uses the Haar cascade classifier for face detection.
+This function fetches historical Bitcoin prices from the CoinDesk API within the specified date range. It takes the `start_date` and `end_date` as parameters and returns the Bitcoin price data in the form of a dictionary.
 
-### `capture_image(face_duration)`
+### `plot_bitcoin_prices(prices)`
 
-This function opens the camera, reads frames from the camera, and displays them. It continuously checks for faces in the frames using `detect_faces()`. If a face is detected, it starts a timer (`face_start_time`) and updates the `face_present` variable accordingly. If a face is not detected, it resets the `face_present` variable.
+This function plots the Bitcoin prices using the `matplotlib` library. It takes the `prices` dictionary as input, where the keys represent the dates and the values represent the corresponding Bitcoin prices. It generates a line chart with dates on the x-axis and prices on the y-axis.
 
-If a face is detected for more than 10 seconds (controlled by `face_duration`), it captures the current frame as an image, saves it to the specified `SAVE_DIR` directory with a timestamped filename, and then sends an email with the captured image as an attachment using `send_email_with_attachment()`.
+### `fetch_and_plot_prices()`
 
-The function exits if 'q' is pressed or when the image is captured and sent.
+This function is the callback function for the "Fetch and Plot" button. It retrieves the selected start and end dates from the calendar widgets, validates the date range, and fetches the Bitcoin prices using the `fetch_bitcoin_prices()` function. If the date range is valid, it proceeds to plot the prices using the `plot_bitcoin_prices()` function. If any error occurs during the validation process, an error message is displayed using the `messagebox` module from `tkinter`.
 
-### `send_email_with_attachment(image_path)`
+## GUI
 
-This function creates an email message with the captured image as an attachment. It sets the sender and recipient email addresses, the subject, and attaches the image to the email. It connects to the SMTP server using the provided server address and port, and authenticates using the sender's email address and password. Finally, it sends the email message.
+The script creates a graphical user interface (GUI) using the `tkinter` library. The GUI consists of the following components:
+
+- Two calendar widgets for selecting the start and end dates.
+- A "Fetch and Plot" button to trigger the fetching and plotting of Bitcoin prices.
 
 ## Usage
 
-To use the script, call the `capture_image()` function with the desired face duration (in seconds) as the argument. The script will open the camera, display the frames, detect faces, and capture an image if a face is detected for the specified duration. The captured image will be saved to the specified directory and sent as an email attachment.
+To use the script, simply run it as a Python script. The GUI window will appear, allowing you to select the desired start and end dates using the calendar widgets. Click the "Fetch and Plot" button to fetch and plot the historical Bitcoin prices.
 
-Example usage:
-
-```python
-python BitcoinPrice.py
-```
-
-**Note:** Make sure to update the configuration variables and have a camera connected to the system before running the script.
+**Note:** Make sure to have the required packages installed before running the script.
