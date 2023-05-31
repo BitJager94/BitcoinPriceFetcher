@@ -52,7 +52,7 @@ To use the script, call the `capture_image()` function with the desired face dur
 Example usage:
 
 ```python
-capture_image(0)
+python BitcoinPrice.py
 ```
 
 **Note:** Make sure to update the configuration variables and have a camera connected to the system before running the script.
